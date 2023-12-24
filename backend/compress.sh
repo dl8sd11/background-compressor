@@ -24,7 +24,7 @@ fg_mp4="${input_file%.*}.fg.mp4"
 bg_mp4="${input_file%.*}.bg.mp4"
 
 if [ ! -f "$fg_avi" ]; then
-    time python3 splitter.py "$input_file" "$mask_file"
+    time python3 ./backend/splitter.py "$input_file" "$mask_file"
     echo "Done splitting $input_file using $mask_file mask."
 else
     echo "Skipping the compressing since the file already exists."
@@ -43,7 +43,7 @@ read background_bitrate
 
 echo "Compressing the video of bitrate $foreground_bitrate and $background_bitrate using ffmpeg."
 
-ffmpeg -i "$fg_avi" -loglevel quiet -b:v "$foreground_bitrate" -c:v libx264 -c:a aac "$fg_mp4"
-ffmpeg -i "$bg_avi" -loglevel quiet -b:v "$background_bitrate" -c:v libx264 -c:a aac "$bg_mp4"
+ffmpeg -i "$fg_avi" -b:v "$foreground_bitrate" -c:v libx264 -c:a aac "$fg_mp4"
+ffmpeg -i "$bg_avi" -b:v "$background_bitrate" -c:v libx264 -c:a aac "$bg_mp4"
 
 rm "$fg_avi" "$bg_avi"
