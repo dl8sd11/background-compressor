@@ -13,11 +13,18 @@ def main(foreground, background):
         if not ret1 or not ret2:
             break
 
-        avg_frame = cv2.addWeighted(fg_frame, 0.5, bg_frame, 0.5, 0)
-        cv2.imshow("Player", avg_frame)
+        sum_frame = cv2.add(fg_frame, bg_frame).clip(0, 255)
+        cv2.imshow("Player", sum_frame)
 
-        if cv2.waitKey(1) & 0xFF == ord('q'):
+        key = cv2.waitKey(1)
+        if key & 0xFF == ord('q'):
             break
+
+        if key == ord('p'):
+            while True:
+                back = cv2.waitKey(-1)
+                if back == ord('p'):
+                    break
 
     fg_stream.release()
     bg_stream.release()
